@@ -1,0 +1,51 @@
+name: GitHub Pages
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+permissions:
+  contents: write
+jobs:
+  build-and-deploy:
+    concurrency: ci-${{ github.ref }}
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20.x
+      - uses: pnpm/action-setup@v2
+        name: Install pnpm
+        with:
+          version: 8.x
+          run_install: false
+      - name: Get pnpm store directory
+        shell: bash
+        run: |
+          echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+      - uses: actions/cache@v3
+        name: Setup pnpm cache
+        with:
+          path: ${{ env.STORE_PATH }}
+          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          restore-keys: |
+            ${{ runner.os }}-pnpm-store-
+      - run: |
+          WD=$(pwd)
+          mkdir dist
+          export VITE_BASE=/vue-jsx/vue2/
+          cd $WD/vue2
+          pnpm install
+          npm run build
+          mv dist $WD/dist/vue2
+          export VITE_BASE=/vue-jsx/vue3/
+          cd $WD/vue3
+          pnpm install
+          npm run build
+          mv dist $WD/dist/vue3
+      - name: Deploy 🚀
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist
