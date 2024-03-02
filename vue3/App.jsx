@@ -1,6 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import Box from './Box.jsx'
 import Counter from './Counter.jsx'
+import Fragments from './Fragments.jsx'
 
 const innerHtml = 'Set <span style="color: orange">Inner HTML</span>'
 
@@ -20,6 +21,8 @@ export default defineComponent({
                 <div v-html={innerHtml}></div>
                 <h2>Events</h2>
                 <div><Counter style="font-size: 1rem;"/></div>
+                <h2>Fragments</h2>
+                <Fragments/>
             </main>
         )
     },

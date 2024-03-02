@@ -1,6 +1,7 @@
 import { defineComponent, ref } from 'vue'
 import Box from './Box.jsx'
 import Counter from './Counter.jsx'
+import NoFragments from './NoFragments.jsx'
 
 const innerHtml = 'Set <span style="color: orange">Inner HTML</span>'
 
@@ -18,6 +19,8 @@ export default defineComponent({
                 <div domPropsInnerHTML={innerHtml}></div>
                 <h2>Events</h2>
                 <div><Counter style="font-size: 1rem;"/></div>
+                <h2>No Fragments</h2>
+                <NoFragments/>
             </main>
         )
     },
