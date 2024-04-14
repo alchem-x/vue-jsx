@@ -29,12 +29,13 @@ jobs:
         name: Setup pnpm cache
         with:
           path: ${{ env.STORE_PATH }}
-          key: ${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}
+          key: "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}"
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
       - run: |
           WD=$(pwd)
           mkdir dist
+          cp index.html $WD/dist/index.html
           export VITE_BASE=/vue-jsx/vue2/
           cd $WD/vue2
           pnpm install
@@ -45,6 +46,7 @@ jobs:
           pnpm install
           npm run build
           mv dist $WD/dist/vue3
+
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@v4
         with:
