@@ -32,7 +32,8 @@ jobs:
           key: "${{ runner.os }}-pnpm-store-${{ hashFiles('**/pnpm-lock.yaml') }}"
           restore-keys: |
             ${{ runner.os }}-pnpm-store-
-      - run: |
+      - name: Build
+        run: |
           WD=$(pwd)
           mkdir dist
           cp index.html $WD/dist/index.html
